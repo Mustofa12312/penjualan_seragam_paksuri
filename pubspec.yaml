@@ -1,0 +1,48 @@
+name: app_jualan_bajuseragam
+description: "Aplikasi POS & Inventori Baju Seragam - Profesional & Production-Ready"
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # UI
+  cupertino_icons: ^1.0.8
+  google_fonts: ^6.2.1
+  fl_chart: ^0.69.0
+  flutter_animate: ^4.5.0
+  lottie: ^3.1.0
+
+  # State Management
+  flutter_riverpod: ^2.6.1
+  riverpod_annotation: ^2.6.1
+
+  # Database
+  hive_flutter: ^1.1.0
+
+  # Navigation
+  go_router: ^14.6.2
+
+  # Utilities
+  uuid: ^4.5.1
+  intl: ^0.19.0
+  path_provider: ^2.1.5
+  share_plus: ^10.1.4
+  file_picker: ^8.1.4
+  csv: ^6.0.0
+  permission_handler: ^11.3.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
