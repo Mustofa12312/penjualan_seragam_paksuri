@@ -1,20 +1,25 @@
 // ignore: unused_import
 import 'package:go_router/go_router.dart';
-import '../features/dashboard/presentation/screens/dashboard_screen.dart';
-import '../features/products/presentation/screens/products_screen.dart';
-import '../features/products/presentation/screens/product_form_screen.dart';
-import '../features/products/presentation/screens/product_detail_screen.dart';
-import '../features/transactions/presentation/screens/new_transaction_screen.dart';
-import '../features/transactions/presentation/screens/transactions_screen.dart';
-import '../features/stock/presentation/screens/stock_screen.dart';
-import '../features/reports/presentation/screens/reports_screen.dart';
-import '../features/settings/presentation/screens/settings_screen.dart';
+import 'features/dashboard/presentation/screens/dashboard_screen.dart';
+import 'features/products/presentation/screens/products_screen.dart';
+import 'features/products/presentation/screens/product_form_screen.dart';
+import 'features/products/presentation/screens/product_detail_screen.dart';
+import 'features/transactions/presentation/screens/new_transaction_screen.dart';
+import 'features/transactions/presentation/screens/transactions_screen.dart';
+import 'features/stock/presentation/screens/stock_screen.dart';
+import 'features/reports/presentation/screens/reports_screen.dart';
+import 'features/settings/presentation/screens/settings_screen.dart';
 import 'shell_screen.dart';
+import 'core/widgets/splash_screen.dart';
 
 /// App router konfigurasi menggunakan go_router
 final appRouter = GoRouter(
-  initialLocation: '/',
+  initialLocation: '/splash',
   routes: [
+    GoRoute(
+      path: '/splash',
+      builder: (context, state) => const SplashScreen(),
+    ),
     ShellRoute(
       builder: (context, state, child) => ShellScreen(child: child),
       routes: [

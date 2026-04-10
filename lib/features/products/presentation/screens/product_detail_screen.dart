@@ -135,7 +135,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                   width: 60,
                   height: 60,
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.2),
+                    color: Colors.white.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(AppTheme.radiusMd),
                   ),
                   child: Center(
@@ -169,7 +169,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 8, vertical: 2),
                             decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.2),
+                              color: Colors.white.withOpacity(0.2),
                               borderRadius:
                                   BorderRadius.circular(AppTheme.radiusFull),
                             ),
@@ -186,7 +186,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                           Text(
                             '${variants.length} ukuran • $totalStock item',
                             style: TextStyle(
-                              color: Colors.white.withValues(alpha: 0.8),
+                              color: Colors.white.withOpacity(0.8),
                               fontSize: 12,
                             ),
                           ),
@@ -344,9 +344,9 @@ class _VariantCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppTheme.radiusLg),
           boxShadow: AppTheme.cardShadow,
           border: variant.isOutOfStock
-              ? Border.all(color: AppTheme.error.withValues(alpha: 0.3))
+              ? Border.all(color: AppTheme.error.withOpacity(0.3))
               : variant.isLowStock
-                  ? Border.all(color: AppTheme.warning.withValues(alpha: 0.3))
+                  ? Border.all(color: AppTheme.warning.withOpacity(0.3))
                   : null,
         ),
         child: Padding(

@@ -54,7 +54,7 @@ class DashboardScreen extends ConsumerWidget {
                                 Text(
                                   'Selamat Datang! 👋',
                                   style: TextStyle(
-                                    color: Colors.white.withValues(alpha: 0.8),
+                                    color: Colors.white.withOpacity(0.8),
                                     fontSize: 13,
                                   ),
                                 ),
@@ -73,7 +73,7 @@ class DashboardScreen extends ConsumerWidget {
                               child: Container(
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                  color: Colors.white.withValues(alpha: 0.15),
+                                  color: Colors.white.withOpacity(0.15),
                                   borderRadius: BorderRadius.circular(AppTheme.radiusMd),
                                 ),
                                 child: const Icon(Icons.settings_outlined, color: Colors.white, size: 20),
@@ -85,7 +85,7 @@ class DashboardScreen extends ConsumerWidget {
                         Text(
                           DateFormatter.full(DateTime.now()),
                           style: TextStyle(
-                            color: Colors.white.withValues(alpha: 0.7),
+                            color: Colors.white.withOpacity(0.7),
                             fontSize: 12,
                           ),
                         ),
@@ -266,7 +266,7 @@ class DashboardScreen extends ConsumerWidget {
                             width: 40,
                             height: 40,
                             decoration: BoxDecoration(
-                              color: AppTheme.primary.withValues(alpha: 0.1),
+                              color: AppTheme.primary.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(AppTheme.radiusMd),
                             ),
                             child: const Icon(Icons.shopping_bag_rounded,
@@ -355,9 +355,9 @@ class _QuickAction extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
           decoration: BoxDecoration(
-            color: color.withValues(alpha: 0.1),
+            color: color.withOpacity(0.1),
             borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-            border: Border.all(color: color.withValues(alpha: 0.2)),
+            border: Border.all(color: color.withOpacity(0.2)),
           ),
           child: Column(
             children: [

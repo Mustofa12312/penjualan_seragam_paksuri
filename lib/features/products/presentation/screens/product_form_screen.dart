@@ -205,10 +205,10 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
               Container(
                 padding: const EdgeInsets.all(AppTheme.spacingMd),
                 decoration: BoxDecoration(
-                  color: AppTheme.info.withValues(alpha: 0.08),
+                  color: AppTheme.info.withOpacity(0.08),
                   borderRadius: BorderRadius.circular(AppTheme.radiusMd),
                   border: Border.all(
-                    color: AppTheme.info.withValues(alpha: 0.2),
+                    color: AppTheme.info.withOpacity(0.2),
                   ),
                 ),
                 child: Row(

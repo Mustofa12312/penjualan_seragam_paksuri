@@ -108,7 +108,7 @@ class _NewTransactionScreenState extends ConsumerState<NewTransactionScreen> {
               width: 64,
               height: 64,
               decoration: BoxDecoration(
-                color: AppTheme.success.withValues(alpha: 0.1),
+                color: AppTheme.success.withOpacity(0.1),
                 shape: BoxShape.circle,
               ),
               child: const Icon(Icons.check_circle_rounded,
@@ -524,13 +524,13 @@ class _NewTransactionScreenState extends ConsumerState<NewTransactionScreen> {
                 padding: const EdgeInsets.all(AppTheme.spacingMd),
                 decoration: BoxDecoration(
                   color: profit >= 0
-                      ? AppTheme.success.withValues(alpha: 0.08)
-                      : AppTheme.error.withValues(alpha: 0.08),
+                      ? AppTheme.success.withOpacity(0.08)
+                      : AppTheme.error.withOpacity(0.08),
                   borderRadius: BorderRadius.circular(AppTheme.radiusMd),
                   border: Border.all(
                     color: profit >= 0
-                        ? AppTheme.success.withValues(alpha: 0.3)
-                        : AppTheme.error.withValues(alpha: 0.3),
+                        ? AppTheme.success.withOpacity(0.3)
+                        : AppTheme.error.withOpacity(0.3),
                   ),
                 ),
                 child: Row(
@@ -671,7 +671,7 @@ class _SelectionCard extends StatelessWidget {
               Icon(
                 Icons.chevron_right_rounded,
                 color: selected
-                    ? Colors.white.withValues(alpha: 0.7)
+                    ? Colors.white.withOpacity(0.7)
                     : AppTheme.neutral300,
                 size: 18,
               ),

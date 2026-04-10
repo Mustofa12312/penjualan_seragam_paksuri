@@ -38,7 +38,7 @@ class StatCard extends StatelessWidget {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: color.withValues(alpha: 0.12),
+                color: color.withOpacity(0.12),
                 borderRadius: BorderRadius.circular(AppTheme.radiusMd),
               ),
               child: Icon(icon, color: color, size: 20),
@@ -94,15 +94,15 @@ class StockBadge extends StatelessWidget {
 
     if (stock <= 0) {
       color = AppTheme.error;
-      bgColor = AppTheme.error.withValues(alpha: 0.1);
+      bgColor = AppTheme.error.withOpacity(0.1);
       label = 'Habis';
     } else if (stock <= 3) {
       color = AppTheme.warning;
-      bgColor = AppTheme.warning.withValues(alpha: 0.1);
+      bgColor = AppTheme.warning.withOpacity(0.1);
       label = 'Menipis ($stock)';
     } else {
       color = AppTheme.success;
-      bgColor = AppTheme.success.withValues(alpha: 0.1);
+      bgColor = AppTheme.success.withOpacity(0.1);
       label = '$stock';
     }
 
@@ -321,7 +321,7 @@ class GradientHeaderCard extends StatelessWidget {
               Text(
                 subtitle!,
                 style: TextStyle(
-                  color: Colors.white.withValues(alpha: 0.7),
+                  color: Colors.white.withOpacity(0.7),
                   fontSize: 12,
                 ),
               ),

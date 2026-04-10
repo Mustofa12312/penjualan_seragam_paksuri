@@ -191,9 +191,9 @@ class _AlertBanner extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.08),
+        color: color.withOpacity(0.08),
         borderRadius: BorderRadius.circular(AppTheme.radiusMd),
-        border: Border.all(color: color.withValues(alpha: 0.25)),
+        border: Border.all(color: color.withOpacity(0.25)),
       ),
       child: Row(
         children: [
@@ -322,9 +322,9 @@ class _StockCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppTheme.radiusLg),
           boxShadow: AppTheme.cardShadow,
           border: variant.isOutOfStock
-              ? Border.all(color: AppTheme.error.withValues(alpha: 0.4))
+              ? Border.all(color: AppTheme.error.withOpacity(0.4))
               : variant.isLowStock
-                  ? Border.all(color: AppTheme.warning.withValues(alpha: 0.4))
+                  ? Border.all(color: AppTheme.warning.withOpacity(0.4))
                   : null,
         ),
         child: Padding(
@@ -337,9 +337,9 @@ class _StockCard extends StatelessWidget {
                 height: 48,
                 decoration: BoxDecoration(
                   color: variant.isOutOfStock
-                      ? AppTheme.error.withValues(alpha: 0.1)
+                      ? AppTheme.error.withOpacity(0.1)
                       : variant.isLowStock
-                          ? AppTheme.warning.withValues(alpha: 0.1)
+                          ? AppTheme.warning.withOpacity(0.1)
                           : AppTheme.neutral100,
                   borderRadius: BorderRadius.circular(AppTheme.radiusMd),
                 ),
@@ -382,7 +382,7 @@ class _StockCard extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(
-                            color: AppTheme.primary.withValues(alpha: 0.1),
+                            color: AppTheme.primary.withOpacity(0.1),
                             borderRadius:
                                 BorderRadius.circular(AppTheme.radiusFull),
                           ),
@@ -419,7 +419,7 @@ class _StockCard extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: AppTheme.primary.withValues(alpha: 0.1),
+                        color: AppTheme.primary.withOpacity(0.1),
                         borderRadius:
                             BorderRadius.circular(AppTheme.radiusFull),
                       ),

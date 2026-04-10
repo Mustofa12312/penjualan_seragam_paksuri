@@ -351,7 +351,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   children: categories.map((cat) {
                     return Chip(
                       label: Text(cat),
-                      backgroundColor: AppTheme.success.withValues(alpha: 0.1),
+                      backgroundColor: AppTheme.success.withOpacity(0.1),
                       labelStyle: const TextStyle(
                         color: AppTheme.success,
                         fontSize: 12,
@@ -412,7 +412,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   children: sizes.map((size) {
                     return Chip(
                       label: Text(size),
-                      backgroundColor: AppTheme.accent.withValues(alpha: 0.1),
+                      backgroundColor: AppTheme.accent.withOpacity(0.1),
                       labelStyle: const TextStyle(
                         color: AppTheme.accent,
                         fontSize: 12,
@@ -453,7 +453,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   width: 36,
                   height: 36,
                   decoration: BoxDecoration(
-                    color: AppTheme.info.withValues(alpha: 0.1),
+                    color: AppTheme.info.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(AppTheme.radiusMd),
                   ),
                   child: const Icon(
@@ -488,7 +488,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   width: 36,
                   height: 36,
                   decoration: BoxDecoration(
-                    color: AppTheme.success.withValues(alpha: 0.1),
+                    color: AppTheme.success.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(AppTheme.radiusMd),
                   ),
                   child: const Icon(
@@ -608,7 +608,7 @@ class _SectionCard extends StatelessWidget {
                   width: 28,
                   height: 28,
                   decoration: BoxDecoration(
-                    color: iconColor.withValues(alpha: 0.1),
+                    color: iconColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(AppTheme.radiusSm),
                   ),
                   child: Icon(icon, color: iconColor, size: 16),
