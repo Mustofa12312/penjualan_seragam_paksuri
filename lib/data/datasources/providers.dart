@@ -20,9 +20,10 @@ final settingsRepositoryProvider = Provider<SettingsRepository>(
 
 // ── Product Providers ─────────────────────────────────────────
 
-final productsProvider = StateNotifierProvider<ProductsNotifier, List<ProductModel>>(
-  (ref) => ProductsNotifier(ref.read(productRepositoryProvider)),
-);
+final productsProvider =
+    StateNotifierProvider<ProductsNotifier, List<ProductModel>>(
+      (ref) => ProductsNotifier(ref.read(productRepositoryProvider)),
+    );
 
 final selectedCategoryProvider = StateProvider<String?>((ref) => null);
 
@@ -35,33 +36,37 @@ final filteredProductsProvider = Provider<List<ProductModel>>((ref) {
 
 // ── Variant Providers ─────────────────────────────────────────
 
-final variantsProvider = StateNotifierProvider<VariantsNotifier, List<VariantModel>>(
-  (ref) => VariantsNotifier(ref.read(productRepositoryProvider)),
-);
+final variantsProvider =
+    StateNotifierProvider<VariantsNotifier, List<VariantModel>>(
+      (ref) => VariantsNotifier(ref.read(productRepositoryProvider)),
+    );
 
-final variantsByProductProvider = Provider.family<List<VariantModel>, String?>(
-  (ref, productId) {
-    if (productId == null) return [];
-    // Watch the variants state to get reactive updates
-    final allVariants = ref.watch(variantsProvider);
-    return allVariants.where((v) => v.productId == productId).toList();
-  },
-);
+final variantsByProductProvider = Provider.family<List<VariantModel>, String?>((
+  ref,
+  productId,
+) {
+  if (productId == null) return [];
+  // Watch the variants state to get reactive updates
+  final allVariants = ref.watch(variantsProvider);
+  return allVariants.where((v) => v.productId == productId).toList();
+});
 
 // ── Transaction Providers ─────────────────────────────────────
 
-final transactionsProvider = StateNotifierProvider<TransactionsNotifier, List<TransactionModel>>(
-  (ref) => TransactionsNotifier(
-    ref.read(transactionRepositoryProvider),
-    ref.read(productRepositoryProvider),
-  ),
-);
+final transactionsProvider =
+    StateNotifierProvider<TransactionsNotifier, List<TransactionModel>>(
+      (ref) => TransactionsNotifier(
+        ref.read(transactionRepositoryProvider),
+        ref.read(productRepositoryProvider),
+      ),
+    );
 
 // ── Settings Providers ────────────────────────────────────────
 
-final categoriesProvider = StateNotifierProvider<CategoriesNotifier, List<String>>(
-  (ref) => CategoriesNotifier(ref.read(settingsRepositoryProvider)),
-);
+final categoriesProvider =
+    StateNotifierProvider<CategoriesNotifier, List<String>>(
+      (ref) => CategoriesNotifier(ref.read(settingsRepositoryProvider)),
+    );
 
 final sizesProvider = StateNotifierProvider<SizesNotifier, List<String>>(
   (ref) => SizesNotifier(ref.read(settingsRepositoryProvider)),
@@ -73,7 +78,9 @@ final shopNameProvider = StateProvider<String>((ref) {
 
 // ── Dashboard Providers ───────────────────────────────────────
 
-final dashboardPeriodProvider = StateProvider<DashboardPeriod>((ref) => DashboardPeriod.today);
+final dashboardPeriodProvider = StateProvider<DashboardPeriod>(
+  (ref) => DashboardPeriod.today,
+);
 
 enum DashboardPeriod { today, week, month, all }
 
@@ -89,18 +96,31 @@ final dashboardTransactionsProvider = Provider<List<TransactionModel>>((ref) {
     case DashboardPeriod.today:
       final startOfDay = DateTime(now.year, now.month, now.day);
       return allTransactions
-          .where((t) => t.date.isAfter(startOfDay.subtract(const Duration(seconds: 1))))
+          .where(
+            (t) =>
+                t.date.isAfter(startOfDay.subtract(const Duration(seconds: 1))),
+          )
           .toList();
     case DashboardPeriod.week:
       final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
-      final weekStart = DateTime(startOfWeek.year, startOfWeek.month, startOfWeek.day);
+      final weekStart = DateTime(
+        startOfWeek.year,
+        startOfWeek.month,
+        startOfWeek.day,
+      );
       return allTransactions
-          .where((t) => t.date.isAfter(weekStart.subtract(const Duration(seconds: 1))))
+          .where(
+            (t) =>
+                t.date.isAfter(weekStart.subtract(const Duration(seconds: 1))),
+          )
           .toList();
     case DashboardPeriod.month:
       final monthStart = DateTime(now.year, now.month, 1);
       return allTransactions
-          .where((t) => t.date.isAfter(monthStart.subtract(const Duration(seconds: 1))))
+          .where(
+            (t) =>
+                t.date.isAfter(monthStart.subtract(const Duration(seconds: 1))),
+          )
           .toList();
     case DashboardPeriod.all:
       return allTransactions;
@@ -150,7 +170,10 @@ class ProductsNotifier extends StateNotifier<List<ProductModel>> {
 
   void load() => state = _repo.getAllProducts();
 
-  Future<void> addProduct({required String name, required String category}) async {
+  Future<void> addProduct({
+    required String name,
+    required String category,
+  }) async {
     await _repo.addProduct(name: name, category: category);
     load();
   }

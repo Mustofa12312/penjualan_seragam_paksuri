@@ -33,7 +33,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     final controller = TextEditingController(text: existing ?? '');
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         title: Text(existing != null ? 'Edit Kategori' : 'Tambah Kategori'),
         content: TextField(
           controller: controller,
@@ -45,7 +45,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(dialogContext),
             child: const Text('Batal'),
           ),
           ElevatedButton(
@@ -59,10 +59,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               } else {
                 await ref.read(categoriesProvider.notifier).addCategory(text);
               }
-              if (mounted) {
-                Navigator.pop(context);
-                showSuccessSnackBar(context,
-                    existing != null ? 'Kategori diperbarui' : 'Kategori ditambahkan');
+              if (dialogContext.mounted) {
+                Navigator.pop(dialogContext);
+                showSuccessSnackBar(
+                  context,
+                  existing != null
+                      ? 'Kategori diperbarui'
+                      : 'Kategori ditambahkan',
+                );
               }
             },
             child: const Text('Simpan'),
@@ -76,7 +80,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     final controller = TextEditingController(text: existing ?? '');
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         title: Text(existing != null ? 'Edit Ukuran' : 'Tambah Ukuran'),
         content: TextField(
           controller: controller,
@@ -88,7 +92,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(dialogContext),
             child: const Text('Batal'),
           ),
           ElevatedButton(
@@ -96,8 +100,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               final text = controller.text.trim();
               if (text.isEmpty) return;
               await ref.read(sizesProvider.notifier).addSize(text);
-              if (mounted) {
-                Navigator.pop(context);
+              if (dialogContext.mounted) {
+                Navigator.pop(dialogContext);
                 showSuccessSnackBar(context, 'Ukuran ditambahkan');
               }
             },
@@ -115,7 +119,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     final controller = TextEditingController(text: shopName);
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         title: const Text('Nama Toko'),
         content: TextField(
           controller: controller,
@@ -127,7 +131,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(dialogContext),
             child: const Text('Batal'),
           ),
           ElevatedButton(
@@ -136,8 +140,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               if (name.isEmpty) return;
               await ref.read(settingsRepositoryProvider).setShopName(name);
               ref.read(shopNameProvider.notifier).state = name;
-              if (mounted) {
-                Navigator.pop(context);
+              if (dialogContext.mounted) {
+                Navigator.pop(dialogContext);
                 showSuccessSnackBar(context, 'Nama toko diperbarui');
               }
             },
@@ -155,8 +159,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     try {
       final productBox = Hive.box<ProductModel>(AppConstants.productBox);
       final variantBox = Hive.box<VariantModel>(AppConstants.variantBox);
-      final transactionBox =
-          Hive.box<TransactionModel>(AppConstants.transactionBox);
+      final transactionBox = Hive.box<TransactionModel>(
+        AppConstants.transactionBox,
+      );
 
       // Build CSV for transactions (most useful export)
       final rows = <List<dynamic>>[AppConstants.transactionCsvHeaders];
@@ -195,21 +200,20 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
       final prodFile = File('${dir.path}/produk_$dateStr.csv');
       await prodFile.writeAsString(
-          const ListToCsvConverter().convert(productRows));
+        const ListToCsvConverter().convert(productRows),
+      );
 
       final varFile = File('${dir.path}/varian_$dateStr.csv');
       await varFile.writeAsString(
-          const ListToCsvConverter().convert(variantRows));
+        const ListToCsvConverter().convert(variantRows),
+      );
 
       // Share all files
-      await Share.shareXFiles(
-        [
-          XFile(transFile.path, mimeType: 'text/csv'),
-          XFile(prodFile.path, mimeType: 'text/csv'),
-          XFile(varFile.path, mimeType: 'text/csv'),
-        ],
-        subject: 'Backup Data Toko Seragam - $dateStr',
-      );
+      await Share.shareXFiles([
+        XFile(transFile.path, mimeType: 'text/csv'),
+        XFile(prodFile.path, mimeType: 'text/csv'),
+        XFile(varFile.path, mimeType: 'text/csv'),
+      ], subject: 'Backup Data Toko Seragam - $dateStr');
 
       if (mounted) showSuccessSnackBar(context, 'Data berhasil diekspor');
     } catch (e) {
@@ -295,14 +299,22 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             iconColor: AppTheme.primary,
             children: [
               ListTile(
-                title: const Text('Nama Toko',
-                    style: TextStyle(
-                        fontSize: 14, fontWeight: FontWeight.w500)),
-                subtitle: Text(shopName,
-                    style: const TextStyle(
-                        color: AppTheme.primary, fontWeight: FontWeight.w700)),
-                trailing: const Icon(Icons.edit_outlined,
-                    size: 18, color: AppTheme.neutral400),
+                title: const Text(
+                  'Nama Toko',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                ),
+                subtitle: Text(
+                  shopName,
+                  style: const TextStyle(
+                    color: AppTheme.primary,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                trailing: const Icon(
+                  Icons.edit_outlined,
+                  size: 18,
+                  color: AppTheme.neutral400,
+                ),
                 onTap: _showShopNameDialog,
               ),
             ],
@@ -323,9 +335,13 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 const Padding(
                   padding: EdgeInsets.all(AppTheme.spacingMd),
                   child: Center(
-                    child: Text('Belum ada kategori',
-                        style:
-                            TextStyle(color: AppTheme.neutral400, fontSize: 13)),
+                    child: Text(
+                      'Belum ada kategori',
+                      style: TextStyle(
+                        color: AppTheme.neutral400,
+                        fontSize: 13,
+                      ),
+                    ),
                   ),
                 )
               else
@@ -337,9 +353,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       label: Text(cat),
                       backgroundColor: AppTheme.success.withValues(alpha: 0.1),
                       labelStyle: const TextStyle(
-                          color: AppTheme.success,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600),
+                        color: AppTheme.success,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
                       deleteIcon: const Icon(Icons.close_rounded, size: 14),
                       deleteIconColor: AppTheme.neutral400,
                       onDeleted: () async {
@@ -379,9 +396,13 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 const Padding(
                   padding: EdgeInsets.all(AppTheme.spacingMd),
                   child: Center(
-                    child: Text('Belum ada ukuran',
-                        style:
-                            TextStyle(color: AppTheme.neutral400, fontSize: 13)),
+                    child: Text(
+                      'Belum ada ukuran',
+                      style: TextStyle(
+                        color: AppTheme.neutral400,
+                        fontSize: 13,
+                      ),
+                    ),
                   ),
                 )
               else
@@ -393,9 +414,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       label: Text(size),
                       backgroundColor: AppTheme.accent.withValues(alpha: 0.1),
                       labelStyle: const TextStyle(
-                          color: AppTheme.accent,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600),
+                        color: AppTheme.accent,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
                       deleteIcon: const Icon(Icons.close_rounded, size: 14),
                       deleteIconColor: AppTheme.neutral400,
                       onDeleted: () async {
@@ -434,23 +456,30 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     color: AppTheme.info.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(AppTheme.radiusMd),
                   ),
-                  child: const Icon(Icons.upload_rounded,
-                      color: AppTheme.info, size: 18),
+                  child: const Icon(
+                    Icons.upload_rounded,
+                    color: AppTheme.info,
+                    size: 18,
+                  ),
                 ),
-                title: const Text('Export ke CSV',
-                    style: TextStyle(
-                        fontSize: 14, fontWeight: FontWeight.w600)),
+                title: const Text(
+                  'Export ke CSV',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                ),
                 subtitle: const Text(
-                    'Download data produk, varian & transaksi',
-                    style:
-                        TextStyle(fontSize: 12, color: AppTheme.neutral400)),
+                  'Download data produk, varian & transaksi',
+                  style: TextStyle(fontSize: 12, color: AppTheme.neutral400),
+                ),
                 trailing: _isExporting
                     ? const SizedBox(
                         width: 20,
                         height: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2))
-                    : const Icon(Icons.chevron_right_rounded,
-                        color: AppTheme.neutral400),
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Icon(
+                        Icons.chevron_right_rounded,
+                        color: AppTheme.neutral400,
+                      ),
                 onTap: _isExporting ? null : _exportData,
               ),
               const Divider(height: 1, indent: 16, endIndent: 16),
@@ -462,22 +491,30 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     color: AppTheme.success.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(AppTheme.radiusMd),
                   ),
-                  child: const Icon(Icons.download_rounded,
-                      color: AppTheme.success, size: 18),
+                  child: const Icon(
+                    Icons.download_rounded,
+                    color: AppTheme.success,
+                    size: 18,
+                  ),
                 ),
-                title: const Text('Import dari CSV',
-                    style: TextStyle(
-                        fontSize: 14, fontWeight: FontWeight.w600)),
-                subtitle: const Text('Impor data transaksi dari file CSV',
-                    style:
-                        TextStyle(fontSize: 12, color: AppTheme.neutral400)),
+                title: const Text(
+                  'Import dari CSV',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                ),
+                subtitle: const Text(
+                  'Impor data transaksi dari file CSV',
+                  style: TextStyle(fontSize: 12, color: AppTheme.neutral400),
+                ),
                 trailing: _isImporting
                     ? const SizedBox(
                         width: 20,
                         height: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2))
-                    : const Icon(Icons.chevron_right_rounded,
-                        color: AppTheme.neutral400),
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Icon(
+                        Icons.chevron_right_rounded,
+                        color: AppTheme.neutral400,
+                      ),
                 onTap: _isImporting ? null : _importTransactions,
               ),
             ],
@@ -490,20 +527,34 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             iconColor: AppTheme.neutral400,
             children: [
               const ListTile(
-                title: Text('Versi Aplikasi',
-                    style:
-                        TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
-                trailing: Text('1.0.0',
-                    style: TextStyle(
-                        color: AppTheme.neutral400, fontSize: 13)),
+                title: Text(
+                  'Versi Aplikasi',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                ),
+                trailing: Text(
+                  '1.0.0',
+                  style: TextStyle(color: AppTheme.neutral400, fontSize: 13),
+                ),
               ),
               const ListTile(
-                title: Text('Teknologi',
-                    style:
-                        TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
-                trailing: Text('Flutter + Hive + Riverpod',
-                    style: TextStyle(
-                        color: AppTheme.neutral400, fontSize: 12)),
+                title: Text(
+                  'Teknologi',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                ),
+                trailing: Text(
+                  'Flutter + Hive + Riverpod',
+                  style: TextStyle(color: AppTheme.neutral400, fontSize: 12),
+                ),
+              ),
+              const ListTile(
+                title: Text(
+                  'Pembuat',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                ),
+                trailing: Text(
+                  'Mustofa Hub 081359088246',
+                  style: TextStyle(color: AppTheme.neutral400, fontSize: 12),
+                ),
               ),
             ],
           ),
@@ -536,7 +587,11 @@ class _SectionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.fromLTRB(
-          AppTheme.spacingMd, AppTheme.spacingMd, AppTheme.spacingMd, 0),
+        AppTheme.spacingMd,
+        AppTheme.spacingMd,
+        AppTheme.spacingMd,
+        0,
+      ),
       decoration: BoxDecoration(
         color: AppTheme.surface,
         borderRadius: BorderRadius.circular(AppTheme.radiusLg),
@@ -574,7 +629,10 @@ class _SectionCard extends StatelessWidget {
           ),
           const Divider(height: 1),
           if (padding != null)
-            Padding(padding: padding!, child: Column(children: children))
+            Padding(
+              padding: padding!,
+              child: Column(children: children),
+            )
           else
             Column(children: children),
         ],

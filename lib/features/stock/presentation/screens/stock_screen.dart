@@ -273,7 +273,7 @@ class _StockCard extends StatelessWidget {
     final controller = TextEditingController(text: variant.stock.toString());
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         title: Text('Update Stok - ${variant.size}'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -294,7 +294,7 @@ class _StockCard extends StatelessWidget {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(dialogContext),
             child: const Text('Batal'),
           ),
           ElevatedButton(
@@ -302,7 +302,7 @@ class _StockCard extends StatelessWidget {
               final newStock = int.tryParse(controller.text);
               if (newStock != null && newStock >= 0) {
                 onUpdate(newStock);
-                Navigator.pop(context);
+                Navigator.pop(dialogContext);
               }
             },
             child: const Text('Simpan'),

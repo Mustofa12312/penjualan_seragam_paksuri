@@ -18,7 +18,6 @@ class ReportsScreen extends ConsumerStatefulWidget {
 class _ReportsScreenState extends ConsumerState<ReportsScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  int _chartDays = 7;
 
   @override
   void initState() {
@@ -38,12 +37,14 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen>
     final period = ref.watch(dashboardPeriodProvider);
     final transactions = ref.watch(dashboardTransactionsProvider);
     final transactionRepo = ref.read(transactionRepositoryProvider);
+    // Gunakan dailyRevenueProvider yang reaktif (otomatis update saat transaksi baru)
+    final dailyData = ref.watch(dailyRevenueProvider);
+    final chartDays = ref.watch(chartDaysProvider);
 
     final totalRevenue = transactionRepo.getTotalRevenue(transactions);
     final totalProfit = transactionRepo.getTotalProfit(transactions);
     final productSales = transactionRepo.getProductSalesCount(transactions);
     final categoryRevenue = transactionRepo.getCategoryRevenue(transactions);
-    final dailyData = transactionRepo.getDailyRevenue(_chartDays);
 
     return Scaffold(
       backgroundColor: AppTheme.background,
@@ -73,8 +74,9 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen>
           ),
           _ChartTab(
             dailyData: dailyData,
-            chartDays: _chartDays,
-            onDaysChanged: (days) => setState(() => _chartDays = days),
+            chartDays: chartDays,
+            onDaysChanged: (days) =>
+                ref.read(chartDaysProvider.notifier).state = days,
             categoryRevenue: categoryRevenue,
           ),
           _ProductsTab(

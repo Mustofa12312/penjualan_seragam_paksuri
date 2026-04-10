@@ -95,7 +95,7 @@ class _NewTransactionScreenState extends ConsumerState<NewTransactionScreen> {
       context: context,
       isDismissible: false,
       backgroundColor: Colors.transparent,
-      builder: (_) => Container(
+      builder: (sheetContext) => Container(
         decoration: const BoxDecoration(
           color: AppTheme.surface,
           borderRadius: BorderRadius.vertical(top: Radius.circular(AppTheme.radiusXl)),
@@ -159,7 +159,7 @@ class _NewTransactionScreenState extends ConsumerState<NewTransactionScreen> {
                 Expanded(
                   child: OutlinedButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.pop(sheetContext);
                       // Reset for new transaction
                       setState(() {
                         _step = 0;
@@ -177,7 +177,7 @@ class _NewTransactionScreenState extends ConsumerState<NewTransactionScreen> {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.pop(sheetContext);
                       context.pop();
                     },
                     child: const Text('Selesai'),

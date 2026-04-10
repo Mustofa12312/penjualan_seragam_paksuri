@@ -419,16 +419,16 @@ Future<bool?> showDeleteConfirmDialog(
 }) {
   return showDialog<bool>(
     context: context,
-    builder: (context) => AlertDialog(
+    builder: (dialogContext) => AlertDialog(
       title: Text(title),
       content: Text(content),
       actions: [
         TextButton(
-          onPressed: () => Navigator.pop(context, false),
+          onPressed: () => Navigator.pop(dialogContext, false),
           child: const Text('Batal'),
         ),
         ElevatedButton(
-          onPressed: () => Navigator.pop(context, true),
+          onPressed: () => Navigator.pop(dialogContext, true),
           style: ElevatedButton.styleFrom(
             backgroundColor: AppTheme.error,
           ),
