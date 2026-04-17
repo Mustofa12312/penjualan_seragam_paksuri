@@ -160,6 +160,48 @@ final lowStockVariantsProvider = Provider<List<VariantModel>>((ref) {
   return variants.where((v) => v.isLowStock || v.isOutOfStock).toList();
 });
 
+// ── Quick Access: Produk Terlaris Provider ────────────────────
+
+/// Mengembalikan pasangan (VariantModel, ProductModel) untuk 5 produk
+/// yang paling sering muncul di riwayat transaksi (berdasarkan frekuensi).
+/// Digunakan untuk fitur Quick Access di step pertama transaksi.
+final topVariantsProvider =
+    Provider<List<({VariantModel variant, ProductModel product})>>((ref) {
+  final transactions = ref.watch(transactionsProvider);
+  final allVariants = ref.watch(variantsProvider);
+  final allProducts = ref.watch(productsProvider);
+
+  // Hitung frekuensi penjualan per variantId
+  final freq = <String, int>{};
+  for (final t in transactions) {
+    freq[t.variantId] = (freq[t.variantId] ?? 0) + 1;
+  }
+
+  if (freq.isEmpty) return [];
+
+  // Urutkan berdasarkan frekuensi tertinggi
+  final sortedIds = freq.keys.toList()
+    ..sort((a, b) => (freq[b] ?? 0).compareTo(freq[a] ?? 0));
+
+  final result = <({VariantModel variant, ProductModel product})>[];
+  for (final variantId in sortedIds.take(5)) {
+    final variant = allVariants.where((v) => v.id == variantId).firstOrNull;
+    if (variant == null || variant.isOutOfStock) continue;
+    final product =
+        allProducts.where((p) => p.id == variant.productId).firstOrNull;
+    if (product == null) continue;
+    result.add((variant: variant, product: product));
+  }
+  return result;
+});
+
+/// Mengembalikan semua produk dalam satu kategori tertentu.
+final productsByCategoryProvider =
+    Provider.family<List<ProductModel>, String>((ref, category) {
+  final products = ref.watch(productsProvider);
+  return products.where((p) => p.category == category).toList();
+});
+
 // ── Notifiers ─────────────────────────────────────────────────
 
 class ProductsNotifier extends StateNotifier<List<ProductModel>> {

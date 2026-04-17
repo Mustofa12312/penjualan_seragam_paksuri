@@ -64,8 +64,55 @@ class ProductRepository {
 
   List<VariantModel> getAllVariants() => _variantBox.values.toList();
 
-  VariantModel? getVariantById(String id) =>
-      _variantBox.values.firstWhere((v) => v.id == id, orElse: () => throw Exception('Variant not found'));
+  VariantModel? getVariantById(String id) {
+    try {
+      return _variantBox.values.firstWhere((v) => v.id == id);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  /// Restore produk dari backup CSV — skip jika ID sudah ada
+  Future<bool> restoreProduct({
+    required String id,
+    required String name,
+    required String category,
+  }) async {
+    if (_productBox.containsKey(id)) return false; // sudah ada, skip
+    final now = DateTime.now();
+    final product = ProductModel(
+      id: id,
+      name: name,
+      category: category,
+      createdAt: now,
+      updatedAt: now,
+    );
+    await _productBox.put(product.id, product);
+    return true;
+  }
+
+  /// Restore varian dari backup CSV — skip jika ID sudah ada
+  Future<bool> restoreVariant({
+    required String id,
+    required String productId,
+    required String size,
+    required double costPrice,
+    required int stock,
+  }) async {
+    if (_variantBox.containsKey(id)) return false; // sudah ada, skip
+    final now = DateTime.now();
+    final variant = VariantModel(
+      id: id,
+      productId: productId,
+      size: size,
+      costPrice: costPrice,
+      stock: stock,
+      createdAt: now,
+      updatedAt: now,
+    );
+    await _variantBox.put(variant.id, variant);
+    return true;
+  }
 
   Future<void> addVariant({
     required String productId,
@@ -184,6 +231,36 @@ class TransactionRepository {
 
   Future<void> deleteTransaction(String id) async {
     await _transactionBox.delete(id);
+  }
+
+  /// Restore transaksi dari backup CSV — skip jika ID sudah ada (anti-duplikat)
+  Future<bool> restoreTransaction({
+    required String id,
+    required String variantId,
+    required String productId,
+    required String productName,
+    required String size,
+    required double sellPrice,
+    required double costPrice,
+    required String category,
+    required int quantity,
+    required DateTime date,
+  }) async {
+    if (_transactionBox.containsKey(id)) return false;
+    final transaction = TransactionModel(
+      id: id,
+      variantId: variantId,
+      productId: productId,
+      productName: productName,
+      size: size,
+      sellPrice: sellPrice,
+      costPrice: costPrice,
+      date: date,
+      category: category,
+      quantity: quantity,
+    );
+    await _transactionBox.put(transaction.id, transaction);
+    return true;
   }
 
   // ── Analytics ─────────────────────────────────────────────────
